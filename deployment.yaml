@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: nextcloud
+      containers:
+        - name: nextcloud
+          image: nextcloud
+          volumeMounts:
+            - mountPath: /var/www/html
+              subPath: hack
+              name: data
